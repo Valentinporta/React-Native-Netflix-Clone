@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Entypo } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
+import { Entypo, FontAwesome, Feather } from '@expo/vector-icons';
 import axios from 'axios';
 import requests from '../../Requests';
 
@@ -26,7 +24,7 @@ const Banner = () => {
     }, [])
 
     return (
-        <View style={{height: '80%'}}>
+        <View style={{minHeight: 525}}>
             <ImageBackground style={styles.banner__image} source={{uri:`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}} >
                 <View style={styles.banner}>
                     <Text style={styles.banner__title}>{movie?.title || movie?.name || movie?.original_name}</Text>
