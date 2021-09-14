@@ -1,5 +1,4 @@
-// import API_KEY from 'react-native-dotenv';
-const API_KEY = '97d129e8c1719d382bb2314981305423';
+import { API_KEY } from '@env';
 
 const requests = {
     fetchTrending: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
