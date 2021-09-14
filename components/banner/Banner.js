@@ -3,6 +3,7 @@ import { Dimensions, ImageBackground, StyleSheet, Text, View, TouchableOpacity }
 import { Entypo, FontAwesome, Feather } from '@expo/vector-icons';
 import axios from '../../axios';
 import requests from '../../Requests';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Banner = () => {
     const [movie, setMovie] = useState([])
@@ -25,25 +26,27 @@ const Banner = () => {
     }, [])
 
     return (
-        <View style={{minHeight: 580}}>
+        <View style={{minHeight: 650}}>
             <ImageBackground style={styles.banner__image} source={{uri:`${base_url}${movie?.poster_path || movie?.backdrop_path}`}} >
-                <View style={styles.banner}>
-                    {/* <Text style={styles.banner__title}>{movie?.title || movie?.name || movie?.original_name}</Text> */}
-                    <Text style={styles.banner__description}>{truncate(movie?.overview, 80)}</Text>
-                    <View style={styles.banner__buttons}>
-                        <TouchableOpacity>
-                            <Entypo style={{textAlign: 'center'}} name="plus" size={30} color="white" />
-                            <Text style={{color: '#fff'}}>My List</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.playButton}>
-                            <FontAwesome style={{paddingVertical: 5}} name="play" size={20} color="black" /><Text style={{color: 'black', fontSize: 20, paddingLeft: 5}}>Play</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Feather style={{textAlign: 'center'}} name="info" size={30} color="white" />
-                            <Text style={{color: '#fff'}}>More Info</Text>
-                        </TouchableOpacity>
+                <LinearGradient locations={[0, 0.8, 1]} colors={['transparent', 'rgba(37, 37, 37, 0.61)', '#111']}>
+                    <View style={styles.banner}>
+                        {/* <Text style={styles.banner__title}>{movie?.title || movie?.name || movie?.original_name}</Text> */}
+                        <Text style={styles.banner__description}>{truncate(movie?.overview, 80)}</Text>
+                        <View style={styles.banner__buttons}>
+                            <TouchableOpacity>
+                                <Entypo style={{textAlign: 'center'}} name="plus" size={30} color="white" />
+                                <Text style={{color: '#fff'}}>My List</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.playButton}>
+                                <FontAwesome style={{paddingVertical: 5}} name="play" size={20} color="black" /><Text style={{color: 'black', fontSize: 20, paddingLeft: 5}}>Play</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <Feather style={{textAlign: 'center'}} name="info" size={30} color="white" />
+                                <Text style={{color: '#fff'}}>More Info</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
+                </LinearGradient>
             </ImageBackground>
         </View>
     )
