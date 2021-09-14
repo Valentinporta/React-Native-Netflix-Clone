@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Entypo, FontAwesome, Feather } from '@expo/vector-icons';
-import axios from 'axios';
+import axios from '../../axios';
 import requests from '../../Requests';
 
 const Banner = () => {
     const [movie, setMovie] = useState([])
+    const base_url = "https://image.tmdb.org/t/p/original/"
 
     const truncate = (string, n) => {
         return string?.length > n ? string.substring(0, n - 1) + '...' : string;
@@ -13,7 +14,7 @@ const Banner = () => {
 
     useEffect(() => {
         const fetchData = async() => {
-            const request = await axios.get(`https://api.themoviedb.org/3${requests.fetchNetflixOriginals}`)
+            const request = await axios.get(requests.fetchNetflixOriginals)
             setMovie(
                 request.data.results[
                 Math.floor(Math.random() * request.data.results.length - 1)
@@ -24,10 +25,10 @@ const Banner = () => {
     }, [])
 
     return (
-        <View style={{minHeight: 525}}>
-            <ImageBackground style={styles.banner__image} source={{uri:`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}} >
+        <View style={{minHeight: 580}}>
+            <ImageBackground style={styles.banner__image} source={{uri:`${base_url}${movie?.poster_path || movie?.backdrop_path}`}} >
                 <View style={styles.banner}>
-                    <Text style={styles.banner__title}>{movie?.title || movie?.name || movie?.original_name}</Text>
+                    {/* <Text style={styles.banner__title}>{movie?.title || movie?.name || movie?.original_name}</Text> */}
                     <Text style={styles.banner__description}>{truncate(movie?.overview, 80)}</Text>
                     <View style={styles.banner__buttons}>
                         <TouchableOpacity>
