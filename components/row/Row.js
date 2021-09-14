@@ -17,7 +17,7 @@ const Row = ({ title, fetchUrl, isLargeRow = false }) => {
 
     return (
         <View style={{backgroundColor: '#111'}}>
-            <Text style={{color: '#fff', marginVertical: 20, marginLeft: 10, fontSize: 20}}>{title}</Text>
+            <Text style={{color: '#fff', marginVertical: 20, marginLeft: 10, fontSize: 20, fontWeight: 'bold'}}>{title}</Text>
             <FlatList
                 data={movies}
                 horizontal={true}
