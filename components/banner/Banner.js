@@ -30,7 +30,6 @@ const Banner = () => {
             <ImageBackground style={styles.banner__image} source={{uri:`${base_url}${movie?.poster_path || movie?.backdrop_path}`}} >
                 <LinearGradient locations={[0, 0.8, 1]} colors={['transparent', 'rgba(37, 37, 37, 0.61)', '#111']}>
                     <View style={styles.banner}>
-                        {/* <Text style={styles.banner__title}>{movie?.title || movie?.name || movie?.original_name}</Text> */}
                         <Text style={styles.banner__description}>{truncate(movie?.overview, 80)}</Text>
                         <View style={styles.banner__buttons}>
                             <TouchableOpacity>
