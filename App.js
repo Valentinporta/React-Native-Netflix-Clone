@@ -1,14 +1,18 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import StackNavigator from './navigation/stackNavigator/StackNavigator';
 import HomeScreen from './screens/homescreen/HomeScreen';
 
 
 export default function App() {
   
   return (
-    <View style={styles.app}>
-      <HomeScreen />
-    </View>
+    <NavigationContainer>
+      <View style={styles.app}>
+        <StackNavigator />
+      </View>
+    </NavigationContainer>
   );
 }
 

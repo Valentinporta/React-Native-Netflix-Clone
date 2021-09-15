@@ -4,10 +4,12 @@ import { Entypo, FontAwesome, Feather } from '@expo/vector-icons';
 import axios from '../../axios';
 import requests from '../../Requests';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/core';
 
 const Banner = () => {
     const [movie, setMovie] = useState([])
     const base_url = "https://image.tmdb.org/t/p/original/"
+    const navigation = useNavigation()
 
     const truncate = (string, n) => {
         return string?.length > n ? string.substring(0, n - 1) + '...' : string;
@@ -39,7 +41,7 @@ const Banner = () => {
                             <TouchableOpacity style={styles.playButton}>
                                 <FontAwesome style={{paddingVertical: 5}} name="play" size={20} color="black" /><Text style={{color: 'black', fontSize: 20, paddingLeft: 5}}>Play</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate("MovieDetails")}>
                                 <Feather style={{textAlign: 'center'}} name="info" size={30} color="white" />
                                 <Text style={{color: '#fff'}}>More Info</Text>
                             </TouchableOpacity>

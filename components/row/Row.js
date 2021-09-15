@@ -1,10 +1,12 @@
+import { useNavigation } from '@react-navigation/core';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 const Row = ({ title, fetchUrl, isLargeRow = false }) => {
     const [movies, setMovies] = useState([])
     const base_url = "https://image.tmdb.org/t/p/original/"
+    const navigation = useNavigation()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,9 +26,9 @@ const Row = ({ title, fetchUrl, isLargeRow = false }) => {
                 keyExtractor={item => item.poster_path || item.backdrop_path}
                 renderItem={({ item }) => (
                     ((isLargeRow && item.poster_path) || (!isLargeRow && item.backdrop_path)) && (
-                        <View>
+                        <TouchableOpacity onPress={() => navigation.navigate("MovieDetails")}>
                             <Image style={isLargeRow ? styles.poster : styles.image} source={{uri: `${base_url}${isLargeRow ? item.poster_path : item.backdrop_path}`}} alt={item.name} />
-                        </View>
+                        </TouchableOpacity>
                     )
                 )}
             />
