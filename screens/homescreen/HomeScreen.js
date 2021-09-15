@@ -5,6 +5,7 @@ import Navbar from '../../components/navbar/Navbar';
 import Row from '../../components/row/Row';
 import requests from '../../Requests';
 
+
 const HomeScreen = () => {
     const scrollY = new Animated.Value(0);
     const diffClamp = Animated.diffClamp(scrollY,0,80);
@@ -12,6 +13,7 @@ const HomeScreen = () => {
         inputRange: [0, 80],
         outputRange: [0, -80]
     });
+    
     return (
         <View>
             <Animated.View style={{transform: [{translateY: translateY}], elevation: 4, zIndex: 2}}>
