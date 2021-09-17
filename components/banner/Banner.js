@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Entypo, FontAwesome, Feather } from '@expo/vector-icons';
-import axios from '../../axios';
+import instance from '../../axios';
+import axios from 'axios';
 import requests from '../../Requests';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/core';
+import { API_KEY } from '@env';
 
 const Banner = () => {
-    const [movie, setMovie] = useState([])
+    const [movie, setMovie] = useState({
+        title: '',
+        image: '',
+        poster: '',
+        cast: [],
+        creator: '',
+        video: '',
+        similarMovies: [],
+        overview: ''
+    })
     const base_url = "https://image.tmdb.org/t/p/original/"
     const navigation = useNavigation()
 
@@ -17,22 +28,34 @@ const Banner = () => {
 
     useEffect(() => {
         const fetchData = async() => {
-            const request = await axios.get(requests.fetchNetflixOriginals)
-            setMovie(
-                request.data.results[
-                Math.floor(Math.random() * request.data.results.length - 1)
-            ]);
-            return request;
+            const request = await instance.get(requests.fetchNetflixOriginals)
+            const random = request.data.results[Math.floor(Math.random() * request.data.results.length - 1)]
+            const request2 = await axios.get(`https://api.themoviedb.org/3/tv/${random.id}?api_key=${API_KEY}&append_to_response=similar,credits,videos`)
+            let similarMovies = request2.data.similar.results
+            similarMovies.length = 6
+            let cast = request2.data.credits.cast
+            cast.length = 5
+            let creator = request2?.data?.credits?.crew?.find(person => person.job === "Executive Producer").name || request2.data.created_by[0].name
+            setMovie({
+                title: request2?.data?.name || request2?.data?.title || request2?.data?.original_name,
+                image: request2?.data?.backdrop_path,
+                poster: request2?.data?.poster_path,
+                cast: cast,
+                creator: creator,
+                video: request2?.data?.videos?.results[0].key,
+                similarMovies: similarMovies,
+                overview: request2?.data?.overview
+            })
+            return request2;
         }
         fetchData()
     }, [])
 
     return (
         <View style={{minHeight: 650}}>
-            <ImageBackground style={styles.banner__image} source={{uri:`${base_url}${movie?.poster_path || movie?.backdrop_path}`}} >
+            <ImageBackground style={styles.banner__image} source={{uri:`${base_url}${movie?.poster || movie?.image}`}} >
                 <LinearGradient locations={[0, 0.8, 1]} colors={['transparent', 'rgba(37, 37, 37, 0.61)', '#111']}>
                     <View style={styles.banner}>
-                        <Text style={styles.banner__description}>{truncate(movie?.overview, 80)}</Text>
                         <View style={styles.banner__buttons}>
                             <TouchableOpacity>
                                 <Entypo style={{textAlign: 'center'}} name="plus" size={30} color="white" />
@@ -41,7 +64,7 @@ const Banner = () => {
                             <TouchableOpacity style={styles.playButton}>
                                 <FontAwesome style={{paddingVertical: 5}} name="play" size={20} color="black" /><Text style={{color: 'black', fontSize: 20, paddingLeft: 5}}>Play</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => navigation.navigate("MovieDetails")}>
+                            <TouchableOpacity onPress={() => navigation.navigate("MovieDetails", movie)}>
                                 <Feather style={{textAlign: 'center'}} name="info" size={30} color="white" />
                                 <Text style={{color: '#fff'}}>More Info</Text>
                             </TouchableOpacity>
