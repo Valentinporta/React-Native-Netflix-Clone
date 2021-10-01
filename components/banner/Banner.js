@@ -17,36 +17,48 @@ const Banner = () => {
         creator: '',
         video: '',
         similarMovies: [],
-        overview: ''
+        overview: '',
     })
     const base_url = "https://image.tmdb.org/t/p/original/"
     const navigation = useNavigation()
 
     const truncate = (string, n) => {
-        return string?.length > n ? string.substring(0, n - 1) + '...' : string;
+        return string?.length > n ? string?.substring(0, n - 1) + '...' : string;
     }
 
     useEffect(() => {
         const fetchData = async() => {
-            const request = await instance.get(requests.fetchNetflixOriginals)
-            const random = request.data.results[Math.floor(Math.random() * request.data.results.length - 1)]
-            const request2 = await axios.get(`https://api.themoviedb.org/3/tv/${random.id}?api_key=${API_KEY}&append_to_response=similar,credits,videos`)
-            let similarMovies = request2.data.similar.results
-            similarMovies.length = 6
-            let cast = request2.data.credits.cast
-            cast.length = 5
-            let creator = request2?.data?.credits?.crew?.find(person => person.job === "Executive Producer").name || request2.data.created_by[0].name
-            setMovie({
-                title: request2?.data?.name || request2?.data?.title || request2?.data?.original_name,
-                image: request2?.data?.backdrop_path,
-                poster: request2?.data?.poster_path,
-                cast: cast,
-                creator: creator,
-                video: request2?.data?.videos?.results[0].key,
-                similarMovies: similarMovies,
-                overview: request2?.data?.overview
-            })
-            return request2;
+            
+            try{
+                const fetchAll = await instance.get(requests.fetchNetflixOriginals)
+                const random = fetchAll.data.results[Math.floor(Math.random() * fetchAll.data.results.length - 1)]
+                let fetchTv = await axios.get(`https://api.themoviedb.org/3/tv/${random.id}?api_key=${API_KEY}&append_to_response=similar,credits,videos`)
+                let fetchMovie = await axios.get(`https://api.themoviedb.org/3/movie/${random.id}?api_key=${API_KEY}&append_to_response=similar,credits,videos`)
+                let fetchResult = fetchTv.data.name === random.name ? fetchTv : fetchMovie
+                let similarMovies = fetchResult?.data?.similar?.results
+                similarMovies?.sort((a, b) => a.popularity - b.popularity)
+                similarMovies.length = 6
+    
+                let cast = fetchResult?.data?.credits?.cast
+                cast.sort((a, b) => a.popularity - b.popularity)
+                cast.length = 5
+    
+                let creator = fetchResult?.data?.credits?.crew?.find(person => person.job === "Executive Producer").name || fetchResult?.data?.created_by || fetchResult?.data?.credits?.crew?.find(person => person.job === "Director").name
+    
+                setMovie({
+                    title: fetchResult?.data?.name || fetchResult?.data?.title || fetchResult?.data?.original_name,
+                    image: fetchResult?.data?.backdrop_path,
+                    poster: fetchResult?.data?.poster_path,
+                    cast: cast,
+                    creator: creator,
+                    video: fetchResult ? (fetchResult?.videos?.results[0].key || fetchResult?.data?.videos?.results[0].key || '') : '',
+                    similarMovies: similarMovies,
+                    overview: fetchResult?.data?.overview
+                })
+                return fetchResult;
+            } catch (err) {
+                fetchData()
+            }
         }
         fetchData()
     }, [])

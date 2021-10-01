@@ -9,6 +9,9 @@ function MovieDetails(props) {
     const movieData = props.route.params;
     const base_url = "https://image.tmdb.org/t/p/original/";
 
+    const director = Array.isArray(movieData?.creator) ? movieData?.creator?.map((c, i) => (i !== movieData?.creator?.length - 1) ? `${c.name}, ` : `${c.name}`) : movieData?.creator;
+    const cast = movieData?.cast?.map((actor, i) => (i !== movieData?.cast?.length - 1) ? `${actor.name}, ` : `${actor.name}`);
+
     useLayoutEffect(() => {
         navigation.setOptions({
             title: '',
@@ -52,8 +55,14 @@ function MovieDetails(props) {
                     </TouchableOpacity>
 
                     <Text style={{color: '#fff', paddingTop: 15}}>{movieData?.overview}</Text>
-                    <Text style={{color: '#fff', paddingTop: 10, fontSize: 12, color: 'gray'}}>Cast: {movieData?.cast?.map((actor, i) => (i !== movieData?.cast?.length - 1) ? `${actor.name}, ` : `${actor.name}`)} </Text>
-                    <Text style={{color: '#fff', paddingTop: 2, fontSize: 12, color: 'gray'}}>Director: {movieData?.creator}</Text>
+
+                    <Text style={{color: '#fff', paddingTop: 10, fontSize: 12, color: 'gray'}}>
+                        Cast: {cast}
+                    </Text>
+
+                    <Text style={{color: '#fff', paddingTop: 2, fontSize: 12, color: 'gray'}}>
+                        Director: {director}
+                    </Text>
 
                     <View style={{display: 'flex', flexDirection: 'row', marginTop: 15, width: 275, justifyContent: 'space-around'}}>
                         <TouchableOpacity>
