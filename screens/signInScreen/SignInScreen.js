@@ -1,9 +1,11 @@
 import { useNavigation } from '@react-navigation/core';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react'
+import React, { useState } from 'react'
 import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, TextInput } from 'react-native';
+import SignupScreen from '../signupScreen/SignupScreen';
 
 const SignInScreen = () => {
+    const [visible, setVisible] = useState(false)
     const navigation = useNavigation()
     const bgImage = require('../../assets/netflix-background.jpg')
     const logo = require('../../assets/netflix-logo.png')
@@ -18,23 +20,31 @@ const SignInScreen = () => {
                     colors={['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 1']}>
 
                     <View style={styles.signInScreen__nav}>
-                        <Image source={logo} style={styles.signInScreen__logo} />
+                        <TouchableOpacity onPress={() => setVisible(false)} >
+                            <Image source={logo} style={styles.signInScreen__logo} />
+                        </TouchableOpacity>
                         <TouchableOpacity style={styles.signInScreen__button}>
-                            <Text style={styles.button__text} onPress={() => navigation.navigate('HomeScreen')}>Sign In</Text>
+                            <Text style={styles.button__text} onPress={() => setVisible(true)}>Sign In</Text>
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.signInScreen__body}>
-                        <Text style={styles.signInScreen__bigText}>Unlimited films, TV programmes, and more.</Text>
-                        <Text style={styles.signInScreen__mediumText}>Watch anywhere. Cancel at any time</Text>
-                        <Text style={styles.signInScreen__smallText}>Ready to watch? Enter your email to create or restart your membership</Text>
-                        <View style={styles.signInScreen__getStarted}>
-                            <TextInput style={styles.getStarted__input} placeholder='Email Address' />
-                            <TouchableOpacity style={styles.getStarted__button}>
-                                <Text style={styles.button__text}>GET STARTED</Text>
-                            </TouchableOpacity>
+                    {visible ?
+                        <View style={styles.signInScreen__body}>
+                            <SignupScreen />
                         </View>
-                    </View>
+                        :
+                        <View style={styles.signInScreen__body}>
+                            <Text style={styles.signInScreen__bigText}>Unlimited films, TV programmes, and more.</Text>
+                            <Text style={styles.signInScreen__mediumText}>Watch anywhere. Cancel at any time</Text>
+                            <Text style={styles.signInScreen__smallText}>Ready to watch? Enter your email to create or restart your membership</Text>
+                            <View style={styles.signInScreen__getStarted}>
+                                <TextInput style={styles.getStarted__input} placeholder='Email Address' />
+                                <TouchableOpacity style={styles.getStarted__button} onPress={() => navigation.navigate('HomeScreen')}>
+                                    <Text style={styles.button__text}>GET STARTED</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    }
 
                 </LinearGradient>
 
@@ -115,7 +125,6 @@ const styles = StyleSheet.create({
         width: 120,
         height: 40,
         backgroundColor: '#e50914',
-        borderRadius: 5
     },
     getStarted__input: {
         backgroundColor: '#fff',
