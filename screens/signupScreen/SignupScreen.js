@@ -1,11 +1,32 @@
 import React, { useState } from 'react';
 import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { auth } from '../../firebase';
 
-function SignupScreen() {
+const SignupScreen = () => {
     const [input, setInput] = useState({
         email: '',
         password: '',
     })
+
+    const register = e => {
+        e.preventDefault();
+        auth.createUserWithEmailAndPassword(
+            input.email,
+            input.password
+        ).then((authUser) => {
+            console.log(authUser)
+        }).catch(error => alert(error.message))
+    }
+
+    const signIn = e => {
+        e.preventDefault()
+        auth.signInWithEmailAndPassword(
+            input.email,
+            input.password
+        ).then((authUser) => {
+            console.log(authUser)
+        }).catch(error => alert(error.message))
+    }
 
     return (
         <View style={styles.signupScreen}>
@@ -23,12 +44,12 @@ function SignupScreen() {
                 placeholder='   Password' textContentType='password'
                 secureTextEntry={true}
             />
-            <TouchableOpacity style={styles.signupScreen__button} onPress={() => {}}>
+            <TouchableOpacity style={styles.signupScreen__button} onPress={signIn}>
                 <Text style={styles.button__text}>Sign In</Text>
             </TouchableOpacity>
             <View style={styles.signupScreen__footerText}>
                 <Text style={styles.footerText__gray}>New to Netflix?</Text>
-                <Text style={styles.footerText__white}>Sign Up now.</Text>
+                <Text style={styles.footerText__white} onPress={register}>Sign Up now.</Text>
             </View>
         </View>
     );

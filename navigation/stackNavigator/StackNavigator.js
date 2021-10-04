@@ -1,21 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../../screens/homescreen/HomeScreen';
 import MovieDetails from '../../screens/movieDetails/MovieDetails';
 import SignInScreen from '../../screens/signInScreen/SignInScreen';
+import { auth } from '../../firebase';
 
 const StackNavigator = () => {
     const Stack = createNativeStackNavigator()
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(userAuth => {
+            userAuth ? setUser(userAuth) : setUser(null)
+        });
+
+        return unsubscribe;
+    }, [])
 
     return (
-        <Stack.Navigator>
-            <Stack.Screen name='SignInScreen' component={SignInScreen} options={{
-                headerShown: false
-            }} />
+        <Stack.Navigator initialRouteName={user ? 'HomeScreen' : 'SignInScreen'}>
+
+        {user &&
+            <>
             <Stack.Screen name='HomeScreen' component={HomeScreen} options={{
                 headerShown: false
             }} />
             <Stack.Screen name='MovieDetails' component={MovieDetails} />
+            </>
+        }
+
+        {!user &&
+            <Stack.Screen name='SignInScreen' component={SignInScreen} options={{
+                headerShown: false
+            }} />
+        }
+        
         </Stack.Navigator>
     )
 };
