@@ -4,6 +4,7 @@ import HomeScreen from '../../screens/homescreen/HomeScreen';
 import MovieDetails from '../../screens/movieDetails/MovieDetails';
 import SignInScreen from '../../screens/signInScreen/SignInScreen';
 import { auth } from '../../firebase';
+import EditProfileScreen from '../../screens/editProfileScreen/EditProfileScreen';
 
 const StackNavigator = () => {
     const Stack = createNativeStackNavigator()
@@ -26,6 +27,8 @@ const StackNavigator = () => {
                 headerShown: false
             }} />
             <Stack.Screen name='MovieDetails' component={MovieDetails} />
+            <Stack.Screen name='EditProfileScreen' component={EditProfileScreen} options={{
+                headerShown: false}} />
             </>
         }
 
