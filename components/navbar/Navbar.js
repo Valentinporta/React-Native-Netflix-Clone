@@ -1,17 +1,16 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { auth } from '../../firebase';
 
-const Navbar = () => {
-    const signOut = () => {
-        auth.signOut();
-    }
+const Navbar = ({ goToProfile, goHome }) => {
+
     return (
         <View>
             <LinearGradient style={styles.header} colors={['#111', 'rgba(37, 37, 37, 0.61)', 'transparent']}>
-                <Image style={styles.header__logo} source={require('../../assets/netflix-logo-movil.png')} />
-                <TouchableOpacity onPress={signOut}>
+                <TouchableOpacity onPress={goHome ? () => goHome() : null}>
+                    <Image style={styles.header__logo} source={require('../../assets/netflix-logo-movil.png')} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={goToProfile ? () => goToProfile() : null}>
                 <Image style={styles.header__avatar} source={require('../../assets/netflix-avatar.png')} />
                 </TouchableOpacity>
             </LinearGradient>
