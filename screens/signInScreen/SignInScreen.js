@@ -39,7 +39,7 @@ const SignInScreen = () => {
                             <Text style={styles.signInScreen__smallText}>Ready to watch? Enter your email to create or restart your membership</Text>
                             <View style={styles.signInScreen__getStarted}>
                                 <TextInput style={styles.getStarted__input} placeholder='Email Address' />
-                                <TouchableOpacity style={styles.getStarted__button} onPress={() => navigation.navigate('HomeScreen')}>
+                                <TouchableOpacity style={styles.getStarted__button} onPress={() => setVisible(true)}>
                                     <Text style={styles.button__text}>GET STARTED</Text>
                                 </TouchableOpacity>
                             </View>
