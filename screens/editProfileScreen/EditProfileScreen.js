@@ -1,11 +1,14 @@
 import { useNavigation } from '@react-navigation/core';
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, TextInput, Image } from 'react-native';
+import { useSelector } from 'react-redux';
 import Navbar from '../../components/navbar/Navbar';
+import { selectUser } from '../../features/userSlice';
 import { auth } from '../../firebase';
 
 const EditProfileScreen = () => {
     const navigation = useNavigation();
+    const user = useSelector(selectUser)
 
     const signOut = () => {
         auth.signOut();
@@ -24,7 +27,7 @@ const EditProfileScreen = () => {
                 </View>
                 <View style={styles.editProfileScreen__profileInfo}>
                     <Image style={styles.editProfileScreen__avatar} source={require('../../assets/netflix-avatar.png')} />
-                    <TextInput editable={false} value='testemail@gmail.com' style={styles.profileInfo__input} />
+                    <TextInput editable={false} value={`${user.email}`} style={styles.profileInfo__input} />
                     <View style={styles.profileInfo__plansBorderBottom}>
                         <Text style={styles.profileInfo__plans}>Plans</Text>
                     </View>

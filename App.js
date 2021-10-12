@@ -2,15 +2,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import StackNavigator from './navigation/stackNavigator/StackNavigator';
+import { Provider } from 'react-redux';
+import store from './app/store';
 
 export default function App() {
   
   return (
-    <NavigationContainer>
-      <View style={styles.app}>
-        <StackNavigator />
-      </View>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <View style={styles.app}>
+          <StackNavigator />
+        </View>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
