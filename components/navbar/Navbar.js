@@ -1,8 +1,10 @@
 import React from 'react';
 import { Dimensions, Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAssets } from 'expo-asset';
 
 const Navbar = ({ goToProfile, goHome }) => {
+    const [assets] = useAssets([require('../../assets/netflix-logo-movil.png'), require('../../assets/netflix-avatar.png')])
 
     return (
         <View>

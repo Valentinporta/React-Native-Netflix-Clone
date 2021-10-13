@@ -21,7 +21,7 @@ const StackNavigator = () => {
               email: userAuth.email
             }))
           } else {
-            dispatch(logout)
+            dispatch(logout())
           }
         })
     

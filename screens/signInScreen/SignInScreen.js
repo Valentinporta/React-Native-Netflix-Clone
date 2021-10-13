@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/core';
+import { useAssets } from 'expo-asset';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react'
 import { Text, View, StyleSheet, ImageBackground, Image, TouchableOpacity, TextInput } from 'react-native';
@@ -7,6 +8,7 @@ import SignupScreen from '../signupScreen/SignupScreen';
 const SignInScreen = () => {
     const [visible, setVisible] = useState(false)
     const navigation = useNavigation()
+    const [assets] = useAssets([require('../../assets/netflix-background.jpg'), require('../../assets/netflix-logo.png')])
     const bgImage = require('../../assets/netflix-background.jpg')
     const logo = require('../../assets/netflix-logo.png')
     return (
